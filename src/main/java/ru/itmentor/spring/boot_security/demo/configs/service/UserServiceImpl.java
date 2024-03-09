@@ -9,8 +9,11 @@ import ru.itmentor.spring.boot_security.demo.configs.models.Role;
 import ru.itmentor.spring.boot_security.demo.configs.models.User;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,14 +40,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void saveUser(User user) {
+    public void saveUser(User user, String[] role) {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 
-        Role userRole = new Role("ROLE_USER"); // Предполагается, что у вас есть конструктор Role, который принимает имя роли
-        user.setRoles(Collections.singleton(userRole));
+//        Role userRole = new Role("ROLE_USER"); // Предполагается, что у вас есть конструктор Role, который принимает имя роли
+//        user.setRoles(Collections.singleton(userRole));
 
-        userDao.saveUser(user);
+        userDao.saveUser(user, role);
 
     }
 
@@ -62,8 +65,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUser(User user) {
-        userDao.updateUser(user);
+    public void updateUser(User user, String[] role) {
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+
+
+        userDao.updateUser(user, role);
     }
 
 

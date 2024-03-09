@@ -9,7 +9,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Repository
@@ -17,7 +21,6 @@ public class UserDAOImpl implements UserDAO {
 
     @PersistenceContext
     private EntityManager entityManager;
-
 
 
     @Override
@@ -33,9 +36,9 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     @Transactional
-    public void saveUser(User user) {
+    public void saveUser(User user, String[] role) {
 
-        entityManager.persist(user);
+        entityManager.persist(createUser(user, role));
     }
 
     @Override
@@ -47,9 +50,33 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void updateUser(User user) {
-        entityManager.merge(user);
+    public void updateUser(User user, String[] role) {
+
+        entityManager.merge(createUser(user, role));
     }
+
+
+    private User createUser(User user, String[] role) {
+        User newUser = new User();
+
+        newUser.setId(user.getId());
+        newUser.setUsername(user.getUsername());
+        newUser.setPassword(user.getPassword());
+        newUser.setDepartment(user.getDepartment());
+        newUser.setSalary(user.getSalary());
+
+        List<String> roles = Arrays.asList(role);
+
+        getAllRoles().forEach(role1 -> {
+            if (roles.contains(role1.getRoleName())) {
+                newUser.getRoles().add(role1);
+            }
+        });
+
+        return newUser;
+
+    }
+
 
     @Override
     public List<Role> getAllRoles() {
@@ -77,6 +104,8 @@ public class UserDAOImpl implements UserDAO {
         TypedQuery<Role> typedQuery = entityManager.createQuery(hql, Role.class);
         return typedQuery.setParameter("username", username).getResultList();
     }
+
+
 }
 
 

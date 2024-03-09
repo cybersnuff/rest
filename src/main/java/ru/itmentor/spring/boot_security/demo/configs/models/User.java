@@ -51,6 +51,10 @@ public class User implements UserDetails {
     }
 
 
+    public void getRole(String role){
+        roles.add(new Role(role));
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

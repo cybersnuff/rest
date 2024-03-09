@@ -1,6 +1,7 @@
 package ru.itmentor.spring.boot_security.demo.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,7 @@ import ru.itmentor.spring.boot_security.demo.configs.models.Role;
 import ru.itmentor.spring.boot_security.demo.configs.models.User;
 
 import javax.annotation.PostConstruct;
+import java.util.Collections;
 import java.util.Set;
 
 @Component
@@ -37,8 +39,8 @@ public class UserDataInit {
         user.setDepartment("Sales");
         user.setSalary(10000);
 
-        userDao.saveUser(admin);
-        userDao.saveUser(user);
+        userDao.saveUser(admin, new String[]{"ROLE_ADMIN"});
+        userDao.saveUser(user, new String[]{"ROLE_USER"});
 
     }
 }

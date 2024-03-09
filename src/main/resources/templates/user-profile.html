@@ -20,18 +20,101 @@
 <!--</body>-->
 <!--</html>-->
 
+<!--<!DOCTYPE html>-->
+<!--<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">-->
+<!--<head>-->
+<!--    <title>Spring Security Example</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Welcome, <span th:text="${user.username}"></span>!</h1>-->
+<!--<h2>Your roles:</h2>-->
+<!--<ul>-->
+<!--    <li th:each="role : ${user.roles}" th:text="${role.roleName}"></li>-->
+<!--</ul>-->
+
+<!--<header>-->
+<!--    <nav>-->
+<!--        <ul>-->
+<!--            <li><a th:href="@{/logout}">Logout</a></li>-->
+<!--        </ul>-->
+<!--    </nav>-->
+<!--</header>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
+    <meta charset="UTF-8">
     <title>Spring Security Example</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #343a40;
+            padding: 10px;
+            color: white;
+            text-align: center;
+        }
+
+        nav ul {
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 10px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+        }
+
+        nav a:hover {
+            color: #ccc;
+        }
+
+        div {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #555;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+
+        span {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-<h1>Welcome, <span th:text="${user.username}"></span>!</h1>
-<h2>Your roles:</h2>
-<ul>
-    <li th:each="role : ${user.roles}" th:text="${role.roleName}"></li>
-</ul>
-
 <header>
     <nav>
         <ul>
@@ -39,5 +122,13 @@
         </ul>
     </nav>
 </header>
+
+<div>
+    <h1>Welcome, <span th:text="${user.username}"></span>!</h1>
+    <h2>Your roles:</h2>
+    <ul>
+        <li th:each="role : ${user.roles}" th:text="${role.roleName}"></li>
+    </ul>
+</div>
 </body>
 </html>

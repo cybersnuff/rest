@@ -9,10 +9,10 @@ import java.util.Set;
 public interface UserService {
 
     public List<User> getAllUsers();
-    public void saveUser(User user);
+    public void saveUser(User user, String[] role);
     public User getUser(Long id);
     public void deleteUser(Long id);
-    public void updateUser(User user);
+    public void updateUser(User user, String[] role);
 
     List<Role> getAllRoles();
 

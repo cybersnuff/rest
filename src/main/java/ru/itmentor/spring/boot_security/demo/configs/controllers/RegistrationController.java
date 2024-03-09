@@ -52,8 +52,10 @@ public class RegistrationController {
 
 
         }
+
+        String[] mass = {"ROLE_USER", "ROLE_ADMIN"};
 // Логика сохранения нового пользователя
-        userService.saveUser(user);
+        userService.saveUser(user, mass);
         return "redirect:/login"; // Перенаправление на страницу входа
 
     }
