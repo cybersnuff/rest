@@ -1,0 +1,67 @@
+package ru.itmentor.spring.boot_security.demo.configs.controllers;
+
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import ru.itmentor.spring.boot_security.demo.configs.models.User;
+import ru.itmentor.spring.boot_security.demo.configs.service.UserService;
+
+import java.util.List;
+
+@Controller
+@RequestMapping("/admin")
+public class AdminController {
+
+    private final UserService userService;
+
+    public AdminController(UserService userService) {
+        this.userService = userService;
+    }
+
+
+    @GetMapping()
+    public String showAllUsers(Model model) {
+        List<User> allUser = userService.getAllUsers();
+        model.addAttribute("allUser", allUser);
+        return "all-users";
+
+    }
+
+    @PostMapping("/addNewUser")
+    @Secured("ROLE_ADMIN")
+    public String addNewUser(Model model) {
+
+        model.addAttribute("user", new User());
+        model.addAttribute("allRoles", userService.getAllRoles());
+        return "add-user";
+
+    }
+
+    @PostMapping("/saveUser")
+    public String saveUser(@ModelAttribute("user") User user) {
+        userService.saveUser(user);
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/updateUser")
+    public String updateUser(@ModelAttribute("user") User user) {
+        userService.updateUser(user);
+        return "redirect:/admin";
+    }
+
+    @GetMapping("/view")
+    public String viewUser(@RequestParam("id") Long id, Model model) {
+        User user = userService.getUser(id);
+        model.addAttribute("user", user);
+        return "update-user";
+    }
+
+    @GetMapping("/deleteUser")
+    public String deleteUser(@RequestParam("id") Long id) {
+        userService.deleteUser(id);
+        return "redirect:/admin";
+    }
+
+}

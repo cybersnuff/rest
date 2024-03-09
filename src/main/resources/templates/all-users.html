@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All User's</title>
+    <style>
+
+
+        body {
+            background-color: #f0f0f0; /* Цвет заднего фона */
+            font-family: Arial, sans-serif; /* Шрифт по умолчанию */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            padding: 6px 12px;
+            border: none;
+            background-color: #2196F3;
+            color: white;
+            cursor: pointer;
+            border-radius: 15px;
+        }
+
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Изменение цвета кнопки Delete */
+        button.delete-button {
+            background-color: #f44336; /* Красный цвет */
+
+        }
+
+        button.delete-button:hover {
+            background-color: #d32f2f; /* Темно-красный цвет при наведении */
+        }
+
+        button.update-button {
+            background-color: #4CAF50; /* Зеленый цвет */
+        }
+        button.update-button:hover {
+            background-color: #45a049; /* Темно-зеленый цвет при наведении */
+        }
+
+        a.logout-button {
+            float: right; /* Помещаем кнопку справа */
+            margin-right: 10px; /* Добавляем немного отступа справа */
+
+        }
+    </style>
+</head>
+<body>
+
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Department</th>
+        <th>Salary</th>
+        <th>Password</th>
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${allUser}">
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.department}"></td>
+        <td th:text="${user.salary}"></td>
+        <td th:text="${user.password}"></td>
+        <td>
+            <a th:href="@{/admin/view(id=${user.id})}">
+                <button class="update-button">Update</button>
+            </a>
+        </td>
+        <td>
+
+
+            <a th:href="@{/admin/deleteUser(id=${user.id})  }">
+                <button class="delete-button">Delete</button>
+            </a>
+
+
+<!--            <form action="@{/admin/deleteUser}" method="post">-->
+<!--                <input type="hidden" name="id" th:value="${user.id}" />-->
+<!--                <button type="submit" class="delete-button">Delete</button>-->
+<!--            </form>-->
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+<br>
+
+
+<!--<a th:href="@{/admin/addNewUser}">-->
+<!--    <button>Add</button>-->
+<!--</a>-->
+
+<form th:action="@{/admin/addNewUser}" method="post" th:object="${user}">
+    <!-- Form fields go here -->
+    <button type="submit">add</button>
+
+
+</form>
+<br>
+<br>
+    <a th:href="@{/logout}">
+        <button class="logout-button">Logout</button>
+    </a>
+
+<!--<a th:href="@{/logout}">-->
+<!--    <button>Logout</button>-->
+<!--</a>-->
+
+
+
+</body>
+</html>
