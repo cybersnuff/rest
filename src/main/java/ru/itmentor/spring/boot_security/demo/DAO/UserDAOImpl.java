@@ -1,27 +1,21 @@
-package ru.itmentor.spring.boot_security.demo.configs.DAO;
+package ru.itmentor.spring.boot_security.demo.DAO;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.itmentor.spring.boot_security.demo.configs.models.Role;
-import ru.itmentor.spring.boot_security.demo.configs.models.User;
+import ru.itmentor.spring.boot_security.demo.models.Role;
+import ru.itmentor.spring.boot_security.demo.models.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 
 @Repository
 public class UserDAOImpl implements UserDAO {
-
     @PersistenceContext
     private EntityManager entityManager;
-
 
     @Override
     public User getUser(Long id) {
@@ -33,13 +27,68 @@ public class UserDAOImpl implements UserDAO {
         return entityManager.createQuery("SELECT u FROM User u", User.class).getResultList();
     }
 
-
     @Override
     @Transactional
     public void saveUser(User user, String[] role) {
 
         entityManager.persist(createUser(user, role));
     }
+
+
+    public void saveRestUser(User user) {
+        User usewr1 = new User();
+
+        usewr1.setId(user.getId());
+        usewr1.setUsername(user.getUsername());
+        usewr1.setPassword(user.getPassword());
+        usewr1.setDepartment(user.getDepartment());
+        usewr1.setSalary(user.getSalary());
+
+        getAllRoles().forEach(rolebd -> {
+
+            System.out.println(user.getRoles());
+           for (Role roleUser : user.getRoles()) {
+
+               System.out.println(rolebd);
+               System.out.println(roleUser);
+
+             if  (rolebd.getRoleName().equals(roleUser.getRoleName())){
+                 usewr1.getRoles().add(rolebd);
+
+             };
+           }
+        });
+        entityManager.persist(usewr1);
+    }
+
+    @Override
+    public void updateRestUser(User user) {
+
+
+        User usewr1 = new User();
+
+        usewr1.setId(user.getId());
+        usewr1.setUsername(user.getUsername());
+        usewr1.setPassword(user.getPassword());
+        usewr1.setDepartment(user.getDepartment());
+        usewr1.setSalary(user.getSalary());
+
+        getAllRoles().forEach(rolebd -> {
+
+            System.out.println(user.getRoles());
+            for (Role roleUser : user.getRoles()) {
+                System.out.println(rolebd);
+                System.out.println(roleUser);
+                if  (rolebd.getRoleName().equals(roleUser.getRoleName())){
+                    usewr1.getRoles().add(rolebd);
+
+                };
+            }
+        });
+        entityManager.merge(usewr1);
+    }
+
+
 
     @Override
     public void deleteUser(Long id) {
@@ -55,16 +104,13 @@ public class UserDAOImpl implements UserDAO {
         entityManager.merge(createUser(user, role));
     }
 
-
     private User createUser(User user, String[] role) {
         User newUser = new User();
-
         newUser.setId(user.getId());
         newUser.setUsername(user.getUsername());
         newUser.setPassword(user.getPassword());
         newUser.setDepartment(user.getDepartment());
         newUser.setSalary(user.getSalary());
-
         List<String> roles = Arrays.asList(role);
 
         getAllRoles().forEach(role1 -> {
@@ -74,9 +120,7 @@ public class UserDAOImpl implements UserDAO {
         });
 
         return newUser;
-
     }
-
 
     @Override
     public List<Role> getAllRoles() {
@@ -104,8 +148,6 @@ public class UserDAOImpl implements UserDAO {
         TypedQuery<Role> typedQuery = entityManager.createQuery(hql, Role.class);
         return typedQuery.setParameter("username", username).getResultList();
     }
-
-
 }
 
 
